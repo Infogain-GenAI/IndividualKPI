@@ -24,6 +24,7 @@
             color: white;
             padding: 25px;
             text-align: center;
+            position: relative;
         }
         .header h1 {
             margin: 0;
@@ -34,6 +35,33 @@
             margin: 8px 0 0 0;
             opacity: 0.8;
             font-size: 0.9em;
+        }
+        .readme-link {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .readme-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .readme-link:visited {
+            color: white;
         }
         .json-input {
             background: #f8f9fa;
@@ -418,6 +446,9 @@
 <body>
     <div class="container">
         <div class="header">
+            <a href="https://github.com/Infogain-GenAI/IndividualKPI/blob/main/README.md" target="_blank" class="readme-link">
+                📖 ReadMe
+            </a>
             <h1>📊 Nbly Digital Individual KPI Dashboard </h1>
             <p>Generated: 2025-09-12 13:16:03 UTC | User: ChandraNadakuditi</p>
             <p>Interactive KPI dashboard with filtering and expand/collapse functionality</p>
