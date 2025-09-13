@@ -28,23 +28,68 @@ The dashboard is published at: **https://infogain-genai.github.io/IndividualKPI/
 The dashboard expects JSON data in the following structure:
 
 ```json
-{
-  "TeamName/ResourceType": {
-    "Resource1": {
-      "Sprint1": 1,
-      "Sprint2": 0,
-      "Sprint3": 1,
-      "Sprint4": 1
-    },
-    "Resource2": {
-      "Sprint1": 0,
-      "Sprint2": 1,
-      "Sprint3": 0,
-      "Sprint4": 1
-    }
+[
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
   }
-}
-```
+]```
 
 ### 2. Data Structure Explanation
 
@@ -57,63 +102,68 @@ The dashboard expects JSON data in the following structure:
 ### 3. Example JSON Data
 
 ```json
-{
-  "Development Team/Code Quality": {
-    "UserService.java": {
-      "Sprint 1": 1,
-      "Sprint 2": 1,
-      "Sprint 3": 0,
-      "Sprint 4": 1,
-      "Sprint 5": 1
-    },
-    "PaymentAPI.js": {
-      "Sprint 1": 0,
-      "Sprint 2": 1,
-      "Sprint 3": 1,
-      "Sprint 4": 0,
-      "Sprint 5": 1
-    },
-    "DatabaseLayer.py": {
-      "Sprint 1": 1,
-      "Sprint 2": 1,
-      "Sprint 3": 1,
-      "Sprint 4": 1,
-      "Sprint 5": 0
-    }
+[
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
   },
-  "QA Team/Test Coverage": {
-    "Unit Tests": {
-      "Sprint 1": 1,
-      "Sprint 2": 0,
-      "Sprint 3": 1,
-      "Sprint 4": 1,
-      "Sprint 5": 1
-    },
-    "Integration Tests": {
-      "Sprint 1": 0,
-      "Sprint 2": 0,
-      "Sprint 3": 1,
-      "Sprint 4": 1,
-      "Sprint 5": 1
-    }
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
   },
-  "Security Team/Vulnerability Assessment": {
-    "Web Application Scan": {
-      "Sprint 1": 1,
-      "Sprint 2": 1,
-      "Sprint 3": 1,
-      "Sprint 4": 0,
-      "Sprint 5": 1
-    },
-    "API Security Check": {
-      "Sprint 1": 1,
-      "Sprint 2": 1,
-      "Sprint 3": 0,
-      "Sprint 4": 1,
-      "Sprint 5": 1
-    }
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
   }
-}
+]
 ```
 
 ### 4. Using the Dashboard
