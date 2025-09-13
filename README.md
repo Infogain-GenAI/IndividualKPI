@@ -26,6 +26,13 @@ The dashboard is published at: **https://org-genai.github.io/IndividualKPI/**
 ### 1. JSON Data Format
 
 The dashboard expects JSON data in the following structure:
+### 2. Data Structure Explanation
+
+- **Resource Names**: Individual resources being tracked (e.g., "Ajay","Vivek" and See "Resource" key below)
+- **KPI Names**: Represent KPI categories (e.g., "Ado Hygiene", "Defects introduced - Dev/QA" and See "KPI Name" below)
+- **Sprint Values**: Binary values which indicates Met or Not Met in a sprint:
+  - `"SP13":"Met"` = Compliant/Met KPI target (green)
+  - `"SP14":"Not Met"` = Non-compliant/Missed KPI target (red)
 
 ```json
 [
@@ -89,16 +96,8 @@ The dashboard expects JSON data in the following structure:
     "SP17": "Met",
     "count": "0"
   }
-]```
-
-### 2. Data Structure Explanation
-
-- **Top Level Keys**: Represent KPI categories (e.g., "Ado Hygiene", "Defects introduced - Dev/QA")
-- **Resource Names**: Individual resources being tracked (e.g., "Ajay","Vivek")
-- **Sprint Values**: Binary values where:
-  - `SP13:Met` = Compliant/Met KPI target (green)
-  - `SP14:Not Met` = Non-compliant/Missed KPI target (red)
-
+]
+```
 ### 3. Example JSON Data
 
 ```json
