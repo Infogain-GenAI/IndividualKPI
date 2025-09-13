@@ -13,7 +13,7 @@ This HTML dashboard is designed to:
 
 ## 🌐 Live Dashboard
 
-The dashboard is published at: **https://infogain-genai.github.io/IndividualKPI/**
+The dashboard is published at: **https://org-genai.github.io/IndividualKPI/**
 
 ## 📁 Files
 
@@ -27,10 +27,10 @@ The dashboard is published at: **https://infogain-genai.github.io/IndividualKPI/
 
 The dashboard expects JSON data in the following structure:
 
-```json
+####json
 [
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Ado Hygiene",
     "SP13": "Met",
     "SP14": "Met",
@@ -40,7 +40,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Daily Burndown for Tasks",
     "SP13": "Met",
     "SP14": "Met",
@@ -50,7 +50,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Defects introduced - Dev/QA",
     "SP13": "Met",
     "SP14": "Met",
@@ -60,7 +60,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Ado Hygiene",
     "SP13": "Met",
     "SP14": "Met",
@@ -70,7 +70,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Daily Burndown for Tasks",
     "SP13": "Met",
     "SP14": "Met",
@@ -80,7 +80,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Defects introduced - Dev/QA",
     "SP13": "Met",
     "SP14": "Met",
@@ -89,22 +89,22 @@ The dashboard expects JSON data in the following structure:
     "SP17": "Met",
     "count": "0"
   }
-]```
+]
 
 ### 2. Data Structure Explanation
 
-- **Top Level Keys**: Represent KPI categories (e.g., "Development Team/Code Quality", "QA Team/Test Coverage")
-- **Resource Names**: Individual resources being tracked (e.g., "UserService.java", "PaymentAPI.js")
+- **Top Level Keys**: Represent KPI categories (e.g., "Ado Hygiene", "Defects introduced - Dev/QA")
+- **Resource Names**: Individual resources being tracked (e.g., "Ajay","Vivek")
 - **Sprint Values**: Binary values where:
-  - `1` = Compliant/Met KPI target (green)
-  - `0` = Non-compliant/Missed KPI target (red)
+  - `SP13:Met` = Compliant/Met KPI target (green)
+  - `SP14:Not Met` = Non-compliant/Missed KPI target (red)
 
 ### 3. Example JSON Data
 
 ```json
 [
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Ado Hygiene",
     "SP13": "Met",
     "SP14": "Met",
@@ -114,7 +114,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Daily Burndown for Tasks",
     "SP13": "Met",
     "SP14": "Met",
@@ -124,7 +124,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "Ajay Varma <ajaykumar.s@infogain.com>",
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
     "KPI Name": "Defects introduced - Dev/QA",
     "SP13": "Met",
     "SP14": "Met",
@@ -134,7 +134,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Ado Hygiene",
     "SP13": "Met",
     "SP14": "Met",
@@ -144,7 +144,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Daily Burndown for Tasks",
     "SP13": "Met",
     "SP14": "Met",
@@ -154,7 +154,7 @@ The dashboard expects JSON data in the following structure:
     "count": "0"
   },
   {
-    "Resource": "vivek.jain <vivek.jain@igglobal.com>",
+    "Resource": "vivek.jain <vivek.jain@org.com>",
     "KPI Name": "Defects introduced - Dev/QA",
     "SP13": "Met",
     "SP14": "Met",
