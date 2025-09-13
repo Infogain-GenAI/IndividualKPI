@@ -476,6 +476,11 @@
                     <option value="positive">Show Positive Trend</option>
                     <option value="negative">Show Negative Trend</option>
                 </select>
+                
+                <label class="filter-label" style="margin-left: 20px;">📋 Filter By KPI:</label>
+                <select id="kpiFilterDropdown" class="filter-dropdown" onchange="applyKpiFilter()">
+                    <option value="all">Show All KPIs</option>
+                </select>
             </div>
             <div class="control-buttons">
                 <button class="control-btn primary" onclick="expandAll()">📖 Expand All</button>
@@ -492,6 +497,8 @@
         let kpiSections = [];
         let allResourceData = {};
         let currentFilter = 'all';
+        let currentKpiFilter = 'all';
+        let availableKpis = [];
 
         function parseResourceInfo(resourceString) {
             const emailMatch = resourceString.match(/<([^>]+)>/);
@@ -680,13 +687,15 @@
         function applyFilter() {
             const filter = document.getElementById('filterDropdown').value;
             currentFilter = filter;
-            const filterInfo = document.getElementById('filterInfo');
-            
-            let visibleKpis = 0;
-            let totalVisibleResources = 0;
             
             kpiSections.forEach((section) => {
                 const kpiName = section.dataset.kpiName;
+                
+                // Skip hidden KPIs due to KPI filter
+                if (currentKpiFilter !== 'all' && kpiName !== currentKpiFilter) {
+                    return;
+                }
+                
                 const resources = allResourceData[kpiName];
                 let visibleResourcesInKpi = 0;
                 
@@ -707,8 +716,6 @@
                 // Show/hide KPI section based on whether it has visible resources
                 if (visibleResourcesInKpi > 0) {
                     section.classList.remove('hidden');
-                    visibleKpis++;
-                    totalVisibleResources += visibleResourcesInKpi;
                     
                     // Update badge
                     const badge = section.querySelector('.kpi-badge');
@@ -718,7 +725,68 @@
                 }
             });
             
-            // Show filter info
+            // Update filter info
+            updateFilterInfo();
+        }
+
+        function applyKpiFilter() {
+            const kpiFilter = document.getElementById('kpiFilterDropdown').value;
+            currentKpiFilter = kpiFilter;
+            
+            kpiSections.forEach((section) => {
+                const kpiName = section.dataset.kpiName;
+                
+                if (kpiFilter === 'all' || kpiName === kpiFilter) {
+                    // Apply the existing filter logic to visible KPIs
+                    const resources = allResourceData[kpiName];
+                    let visibleResourcesInKpi = 0;
+                    
+                    const rows = section.querySelectorAll('tbody tr');
+                    rows.forEach((row, index) => {
+                        const resourceIndex = parseInt(row.dataset.resourceIndex);
+                        const resource = resources[resourceIndex];
+                        
+                        if (shouldShowResource(resource, currentFilter)) {
+                            row.classList.remove('hidden');
+                            visibleResourcesInKpi++;
+                        } else {
+                            row.classList.add('hidden');
+                        }
+                    });
+                    
+                    if (visibleResourcesInKpi > 0) {
+                        section.classList.remove('hidden');
+                        const badge = section.querySelector('.kpi-badge');
+                        badge.textContent = `${visibleResourcesInKpi} resources`;
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                } else {
+                    // Hide this KPI section completely
+                    section.classList.add('hidden');
+                }
+            });
+            
+            // Update filter info to include KPI filter
+            updateFilterInfo();
+        }
+
+        function updateFilterInfo() {
+            const filterInfo = document.getElementById('filterInfo');
+            const filter = currentFilter;
+            const kpiFilter = currentKpiFilter;
+            
+            let visibleKpis = 0;
+            let totalVisibleResources = 0;
+            
+            kpiSections.forEach((section) => {
+                if (!section.classList.contains('hidden')) {
+                    visibleKpis++;
+                    const rows = section.querySelectorAll('tbody tr:not(.hidden)');
+                    totalVisibleResources += rows.length;
+                }
+            });
+            
             const filterMessages = {
                 'all': 'Showing all resources',
                 'issues': `Showing only resources with compliance issues`,
@@ -726,8 +794,13 @@
                 'negative': `Showing only resources with negative trends`
             };
             
-            if (filter !== 'all') {
-                filterInfo.textContent = `${filterMessages[filter]} (${totalVisibleResources} resources across ${visibleKpis} KPIs)`;
+            let message = filterMessages[filter];
+            if (kpiFilter !== 'all') {
+                message += ` for KPI: ${kpiFilter}`;
+            }
+            
+            if (filter !== 'all' || kpiFilter !== 'all') {
+                filterInfo.textContent = `${message} (${totalVisibleResources} resources across ${visibleKpis} KPIs)`;
                 filterInfo.style.display = 'block';
             } else {
                 filterInfo.style.display = 'none';
@@ -748,6 +821,22 @@
             }
         }
 
+        function populateKpiDropdown(kpiNames) {
+            const dropdown = document.getElementById('kpiFilterDropdown');
+            // Clear existing options except the first one
+            dropdown.innerHTML = '<option value="all">Show All KPIs</option>';
+            
+            // Add KPI options
+            kpiNames.forEach(kpiName => {
+                const option = document.createElement('option');
+                option.value = kpiName;
+                option.textContent = kpiName;
+                dropdown.appendChild(option);
+            });
+            
+            availableKpis = kpiNames;
+        }
+
         function clearData() {
             //document.getElementById('jsonInput').value = '';
             document.getElementById('chartsContainer').innerHTML = '';
@@ -756,6 +845,13 @@
             document.getElementById('filterInfo').style.display = 'none';
             kpiSections = [];
             allResourceData = {};
+            currentFilter = 'all';
+            currentKpiFilter = 'all';
+            availableKpis = [];
+            
+            // Reset KPI dropdown
+            const kpiDropdown = document.getElementById('kpiFilterDropdown');
+            kpiDropdown.innerHTML = '<option value="all">Show All KPIs</option>';
         }
 
         function generateCharts() {
@@ -869,9 +965,14 @@
                 // Show controls
                 controlsRow.style.display = 'flex';
                 
-                // Reset filter dropdown
+                // Reset filter dropdowns
                 document.getElementById('filterDropdown').value = 'all';
                 currentFilter = 'all';
+                
+                // Populate KPI dropdown
+                populateKpiDropdown(Object.keys(kpiGroups));
+                document.getElementById('kpiFilterDropdown').value = 'all';
+                currentKpiFilter = 'all';
 
                 // Generate summary statistics
                 const overallCompliance = totalInstances > 0 ? Math.round((totalCompliantInstances / totalInstances) * 100) : 0;
