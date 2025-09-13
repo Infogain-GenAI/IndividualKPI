@@ -733,7 +733,7 @@
             const kpiFilter = document.getElementById('kpiFilterDropdown').value;
             currentKpiFilter = kpiFilter;
             
-            kpiSections.forEach((section) => {
+            kpiSections.forEach((section, index) => {
                 const kpiName = section.dataset.kpiName;
                 
                 if (kpiFilter === 'all' || kpiName === kpiFilter) {
@@ -758,6 +758,20 @@
                         section.classList.remove('hidden');
                         const badge = section.querySelector('.kpi-badge');
                         badge.textContent = `${visibleResourcesInKpi} resources`;
+                        
+                        // If a specific KPI is selected (not "all"), expand this section
+                        if (kpiFilter !== 'all') {
+                            const header = section.querySelector('.kpi-header');
+                            const content = section.querySelector('.kpi-content');
+                            const icon = section.querySelector('.expand-icon');
+                            
+                            header.classList.add('expanded');
+                            content.classList.remove('collapsed');
+                            content.classList.add('expanded');
+                            icon.classList.add('expanded');
+                            section.classList.remove('collapsed');
+                            section.classList.add('expanded');
+                        }
                     } else {
                         section.classList.add('hidden');
                     }
