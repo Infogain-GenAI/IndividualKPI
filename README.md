@@ -27,7 +27,7 @@ The dashboard is published at: **https://org-genai.github.io/IndividualKPI/**
 
 The dashboard expects JSON data in the following structure:
 
-####json
+```json
 [
   {
     "Resource": "Ajay Varma <ajaykumar.s@org.com>",
@@ -89,7 +89,7 @@ The dashboard expects JSON data in the following structure:
     "SP17": "Met",
     "count": "0"
   }
-]
+]```
 
 ### 2. Data Structure Explanation
 
