@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>README - Nbly Digital Individual KPI Dashboard</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: #222; margin: 0; padding: 0; }
+    .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 32px rgba(44,62,80,0.10); padding: 32px; }
+    h1, h2, h3 { color: #2c3e50; }
+    pre, code { background: #f6f8fa; border-radius: 6px; padding: 8px; font-family: 'Fira Mono', 'Consolas', monospace; font-size: 14px; }
+    ul, ol { margin-left: 24px; }
+    .back-link { display: inline-block; margin-bottom: 24px; color: #007bff; text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+    blockquote { border-left: 4px solid #007bff; background: #f6f8fa; padding: 8px 16px; margin: 16px 0; color: #495057; }
+    .json-sample { background: #f6f8fa; border-radius: 6px; padding: 12px; font-size: 13px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
+    <h1>📊 Nbly Digital Individual KPI Dashboard</h1>
+    <p>An interactive web-based dashboard for visualizing and tracking individual Key Performance Indicators (KPIs) with sparkline charts, filtering capabilities, and expand/collapse functionality.</p>
+    <h2>🎯 Purpose</h2>
+    <ul>
+      <li><b>Visualize KPI compliance</b> across multiple sprints using interactive sparkline charts</li>
+      <li><b>Track performance trends</b> with visual indicators (up/down/stable)</li>
+      <li><b>Filter and organize</b> KPIs by team, resource type, or compliance status</li>
+      <li><b>Provide interactive exploration</b> with collapsible sections and hover tooltips</li>
+      <li><b>Display compliance rates</b> with color-coded badges and issue tracking</li>
+    </ul>
+    <h2>🌐 Live Dashboard</h2>
+    <p>The dashboard is published at: <a href="index.html">https://infogain-genai.github.io/IndividualKPI/</a></p>
+    <h2>📁 Files</h2>
+    <ul>
+      <li><code>index.html</code> - Main dashboard file with all functionality</li>
+      <li><code>readme.html</code> - This documentation as a web page</li>
+      <li><code>README.md</code> - Original markdown documentation</li>
+    </ul>
+    <h2>📋 How to Use</h2>
+    <h3>1. JSON Data Format</h3>
+    <div class="json-sample"><pre><code>[
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  }
+]</code></pre></div>
+    <h3>2. Data Structure Explanation</h3>
+    <ul>
+      <li><b>Top Level Keys</b>: Represent KPI categories (e.g., "Ado Hygiene", "Defects introduced - Dev/QA")</li>
+      <li><b>Resource Names</b>: Individual resources being tracked (e.g., "Ajay","Vivek")</li>
+      <li><b>Sprint Values</b>: Binary values where:<br>
+        <code>SP13:Met</code> = Compliant/Met KPI target (green)<br>
+        <code>SP14:Not Met</code> = Non-compliant/Missed KPI target (red)
+      </li>
+    </ul>
+    <h3>3. Example JSON Data</h3>
+    <div class="json-sample"><pre><code>[
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "Ajay Varma <ajaykumar.s@org.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Ado Hygiene",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Daily Burndown for Tasks",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  },
+  {
+    "Resource": "vivek.jain <vivek.jain@org.com>",
+    "KPI Name": "Defects introduced - Dev/QA",
+    "SP13": "Met",
+    "SP14": "Met",
+    "SP15": "Met",
+    "SP16": "Met",
+    "SP17": "Met",
+    "count": "0"
+  }
+]</code></pre></div>
+    <h3>4. Using the Dashboard</h3>
+    <ol>
+      <li><b>Input Data</b>: Paste your JSON data into the text area at the top</li>
+      <li><b>Generate Charts</b>: Click "🔄 Generate Charts" to visualize the data</li>
+      <li><b>Filter Data</b>: Use the dropdown to filter by team, compliance status, or view all</li>
+      <li><b>Expand/Collapse</b>:<br>
+        - Click on any KPI section header to expand/collapse<br>
+        - Use "Expand All" or "Collapse All" buttons for bulk actions
+      </li>
+      <li><b>Interactive Elements</b>:<br>
+        - Hover over sparkline points to see sprint details<br>
+        - View compliance rates and trend indicators<br>
+        - See issue counts for non-compliant resources
+      </li>
+    </ol>
+    <h3>5. Dashboard Features</h3>
+    <ul>
+      <li>📈 Sparkline Charts: Visual representation of KPI compliance over time</li>
+      <li>🎯 Compliance Rates: Percentage-based performance indicators</li>
+      <li>📊 Trend Analysis: Up/down/stable trend indicators</li>
+      <li>🔍 Filtering: Filter by team, compliance status, or issues</li>
+      <li>📱 Responsive Design: Works on desktop and mobile devices</li>
+      <li>🎨 Interactive UI: Smooth animations and hover effects</li>
+    </ul>
+    <h2>🛠️ Customization</h2>
+    <p>The dashboard can be customized by modifying:</p>
+    <ul>
+      <li>Color schemes in the CSS section</li>
+      <li>Compliance thresholds in the JavaScript functions</li>
+      <li>Sprint column headers (automatically detected from JSON)</li>
+      <li>Filtering options in the dropdown menus</li>
+    </ul>
+    <h2>📊 Supported KPI Types</h2>
+    <ul>
+      <li>Code quality compliance</li>
+      <li>Test coverage targets</li>
+      <li>Security scan results</li>
+      <li>Documentation completeness</li>
+      <li>Performance benchmarks</li>
+      <li>Process adherence</li>
+      <li>Review completion rates</li>
+    </ul>
+    <h2>🚀 Deployment</h2>
+    <p>This dashboard is automatically deployed via GitHub Pages and updates whenever changes are pushed to the main branch.</p>
+  </div>
+</body>
+</html>
