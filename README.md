@@ -13,7 +13,7 @@ This HTML dashboard is designed to:
 
 ## 🌐 Live Dashboard
 
-The dashboard is published at: **https://org-genai.github.io/IndividualKPI/**
+The dashboard is published at: ** https://infogain-genai.github.io/IndividualKPI/**
 
 ## 📁 Files
 
