@@ -1,0 +1,2351 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        .upload-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+        }
+
+        .file-upload-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn {
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23,162,184,0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220,53,69,0.4);
+        }
+
+        .file-info {
+            margin: 15px 0;
+            padding: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            color: #495057;
+            display: none;
+        }
+
+        .kpi-section {
+            padding: 30px;
+            background: #fff;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .kpi-card.sprint18 {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .kpi-card.genai {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        .kpi-card.automation {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        .kpi-card.productivity {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .kpi-card.testing {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .kpi-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .kpi-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .kpi-label {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 8px;
+        }
+
+        .kpi-sublabel {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .charts-section {
+            padding: 30px;
+        }
+
+        .charts-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .charts-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .charts-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .chart-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .status-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .status-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .sprint-info {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid #f39c12;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1400px) {
+            .charts-grid-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .charts-grid-4, .charts-grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid-4, .charts-grid-3, .charts-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .kpi-cards {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        .data-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+    
+
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Sprint 18 Complete Analysis Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        .upload-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+        }
+
+        .file-upload-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn {
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23,162,184,0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220,53,69,0.4);
+        }
+
+        .file-info {
+            margin: 15px 0;
+            padding: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            color: #495057;
+            display: none;
+        }
+
+        .kpi-section {
+            padding: 30px;
+            background: #fff;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .kpi-card.sprint18 {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .kpi-card.genai {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        .kpi-card.automation {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        .kpi-card.productivity {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .kpi-card.testing {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .kpi-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .kpi-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .kpi-label {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 8px;
+        }
+
+        .kpi-sublabel {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        .charts-section {
+            padding: 30px;
+        }
+
+        .charts-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .charts-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .charts-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .chart-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .status-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .status-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .sprint-info {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 4px solid #f39c12;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1400px) {
+            .charts-grid-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .charts-grid-4, .charts-grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid-4, .charts-grid-3, .charts-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .kpi-cards {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        .data-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Sprint 18 Complete Analysis Dashboard</h1>
+            <p>Comprehensive Analytics with GenAI Adoption, Team Performance & Productivity Metrics</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <div class="upload-controls">
+                <div class="file-upload-wrapper">
+                    <input type="file" id="jsonFileInput" class="file-upload-input" accept=".json,.csv,.txt" multiple>
+                    <button class="btn btn-primary">📁 Upload Sprint 18 JSON</button>
+                </div>
+                <button class="btn btn-success" onclick="processFiles()" id="processBtn" disabled>
+                    🔄 Generate Analysis
+                </button>
+                <button class="btn btn-info" onclick="loadFullSprintData()">
+                    📊 Load Complete Sprint 18
+                </button>
+                <button class="btn btn-danger" onclick="clearData()">
+                    🗑️ Clear All Data
+                </button>
+            </div>
+
+            <div class="file-info" id="fileInfo"></div>
+            <div id="statusMessage" class="status-message status-info">
+                🎯 Ready to analyze Sprint 18 data with enhanced metrics and visualizations
+            </div>
+        </div>
+
+        <!-- KPI Section -->
+        <div class="kpi-section">
+            <div class="sprint-info" id="sprintInfo">
+                📊 <strong>Sprint 18 Enhanced Analysis:</strong> This dashboard is optimized for your specific Sprint 18 data structure including Tech Stories, Story Points, iteration paths, and team assignments
+            </div>
+            
+            <div class="data-summary" id="dataSummary" style="display: none;">
+                <!-- Data summary will be populated here -->
+            </div>
+            
+            <div class="kpi-cards" id="kpiCards">
+                <!-- KPI cards will be generated here -->
+                <div class="kpi-card sprint18">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-value">Ready</div>
+                    <div class="kpi-label">Sprint 18 Analysis</div>
+                    <div class="kpi-sublabel">Click "Load Complete Sprint 18" to begin</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section" id="chartsSection" style="display: none;">
+            <!-- Row 1: Overview Charts -->
+            <div class="charts-grid-4">
+                <div class="chart-container">
+                    <div class="chart-title">📋 Work Item Types</div>
+                    <div id="workItemChart" style="height: 320px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">⭐ Story Points Distribution</div>
+                    <div id="storyPointsChart" style="height: 320px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">✅ Task Status Overview</div>
+                    <div id="statusChart" style="height: 320px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">🏆 Team Distribution</div>
+                    <div id="teamChart" style="height: 320px;"></div>
+                </div>
+            </div>
+
+            <!-- Row 2: GenAI and Performance Analysis -->
+            <div class="charts-grid-3">
+                <div class="chart-container">
+                    <div class="chart-title">📈 GenAI Test Cases Trend</div>
+                    <div id="genaiTrendChart" style="height: 360px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">🎯 Story Points by Team</div>
+                    <div id="teamPointsChart" style="height: 360px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">📊 Sprint 18 Performance</div>
+                    <div id="performanceChart" style="height: 360px;"></div>
+                </div>
+            </div>
+
+            <!-- Row 3: Detailed Analysis -->
+            <div class="charts-grid-2">
+                <div class="chart-container">
+                    <div class="chart-title">🔧 Task Categories & Automation</div>
+                    <div id="categoryChart" style="height: 400px;"></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">👥 Individual Contributor Analysis</div>
+                    <div id="contributorChart" style="height: 400px;"></div>
+                </div>
+            </div>
+
+            <!-- Row 4: Advanced Metrics -->
+            <div class="chart-container full-width">
+                <div class="chart-title">📈 Comprehensive Sprint 18 Metrics Dashboard</div>
+                <div id="comprehensiveChart" style="height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sprintData = [];
+        let uploadedFiles = null;
+
+        // Enhanced Sprint 18 sample data based on your JSON structure
+        const fullSprintData = [
+            {
+                "ID": 542898,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] [Agnostic flow] Script size under 150KB for any lazy loaded script else build should fail",
+                "State": "Closed",
+                "Assigned To": "Jitendra Singh <jitendra1.singh@igglobal.com>",
+                "Tags": "QANotNeeded; S18 2025 planned",
+                "Story Points": 12,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542899,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] GenAI Test Case Generation Framework",
+                "State": "Closed",
+                "Assigned To": "Sarah Johnson <sarah.johnson@igglobal.com>",
+                "Tags": "GenAI; S18 2025 planned",
+                "Story Points": 15,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542900,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Automated Test Suite Enhancement",
+                "State": "Closed",
+                "Assigned To": "Mike Wilson <mike.wilson@igglobal.com>",
+                "Tags": "Automation; S18 2025 planned",
+                "Story Points": 8,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542901,
+                "Work Item Type": "Bug",
+                "Title 1": "[OPUS 2.0] Fix GenAI Integration Issues",
+                "State": "Resolved",
+                "Assigned To": "Emily Davis <emily.davis@igglobal.com>",
+                "Tags": "GenAI; BugFix; S18 2025",
+                "Story Points": 5,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542902,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] Performance Optimization for GenAI Tools",
+                "State": "In Progress",
+                "Assigned To": "Alex Turner <alex.turner@igglobal.com>",
+                "Tags": "GenAI; Performance; S18 2025 planned",
+                "Story Points": 20,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542903,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Smart Test Data Generation",
+                "State": "Closed",
+                "Assigned To": "Lisa Chen <lisa.chen@igglobal.com>",
+                "Tags": "GenAI; TestData; S18 2025 planned",
+                "Story Points": 13,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542904,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] API Test Automation Enhancement",
+                "State": "Closed",
+                "Assigned To": "John Smith <john.smith@igglobal.com>",
+                "Tags": "API; Automation; S18 2025 planned",
+                "Story Points": 10,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542905,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Code Review Assistant",
+                "State": "New",
+                "Assigned To": "David Kim <david.kim@igglobal.com>",
+                "Tags": "GenAI; CodeReview; S18 2025 planned",
+                "Story Points": 18,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542906,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Intelligent Bug Detection System",
+                "State": "Closed",
+                "Assigned To": "Rachel Green <rachel.green@igglobal.com>",
+                "Tags": "GenAI; BugDetection; S18 2025 planned",
+                "Story Points": 16,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542907,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Cross-Browser Testing Automation",
+                "State": "Closed",
+                "Assigned To": "Michael Brown <michael.brown@igglobal.com>",
+                "Tags": "CrossBrowser; Automation; S18 2025 planned",
+                "Story Points": 7,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542908,
+                "Work Item Type": "Bug",
+                "Title 1": "[OPUS 2.0] Memory Leak in Test Framework",
+                "State": "Resolved",
+                "Assigned To": "Jennifer Lee <jennifer.lee@igglobal.com>",
+                "Tags": "Performance; Framework; S18 2025",
+                "Story Points": 3,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542909,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Test Report Generator",
+                "State": "In Progress",
+                "Assigned To": "Chris Wilson <chris.wilson@igglobal.com>",
+                "Tags": "GenAI; Reporting; S18 2025 planned",
+                "Story Points": 14,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542910,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Smart Test Case Prioritization",
+                "State": "Closed",
+                "Assigned To": "Anna Martinez <anna.martinez@igglobal.com>",
+                "Tags": "GenAI; Prioritization; S18 2025 planned",
+                "Story Points": 11,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542911,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Mobile Test Automation Suite",
+                "State": "Closed",
+                "Assigned To": "Tom Anderson <tom.anderson@igglobal.com>",
+                "Tags": "Mobile; Automation; S18 2025 planned",
+                "Story Points": 9,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542912,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Performance Metrics Dashboard",
+                "State": "New",
+                "Assigned To": "Sofia Rodriguez <sofia.rodriguez@igglobal.com>",
+                "Tags": "GenAI; Metrics; Dashboard; S18 2025 planned",
+                "Story Points": 17,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            }
+        ];
+
+        // GenAI test cases trend with Sprint 18
+        const genaiTestCasesData = [
+            { sprint: 'Sprint 14', cases: 267, color: '#FF9999' },
+            { sprint: 'Sprint 15', cases: 224, color: '#66B2FF' },
+            { sprint: 'Sprint 16', cases: 173, color: '#99FF99' },
+            { sprint: 'Sprint 17', cases: 238, color: '#FF6B6B' },
+            { sprint: 'Sprint 18', cases: 185, color: '#E74C3C' }
+        ];
+
+        // File handling setup
+        function setupFileHandling() {
+            const fileInput = document.getElementById('jsonFileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const processBtn = document.getElementById('processBtn');
+
+            fileInput.addEventListener('change', function(e) {
+                uploadedFiles = e.target.files;
+                if (uploadedFiles && uploadedFiles.length > 0) {
+                    const fileNames = Array.from(uploadedFiles).map(f => f.name).join(', ');
+                    fileInfo.innerHTML = `<strong>📁 Selected Files:</strong> ${fileNames} (${uploadedFiles.length} file${uploadedFiles.length > 1 ? 's' : ''})`;
+                    fileInfo.style.display = 'block';
+                    processBtn.disabled = false;
+                } else {
+                    fileInfo.style.display = 'none';
+                    processBtn.disabled = true;
+                }
+            });
+        }
+
+        function processFiles() {
+            if (!uploadedFiles || uploadedFiles.length === 0) {
+                showStatus('Please select files to upload first.', 'error');
+                return;
+            }
+
+            showStatus('Processing your Sprint 18 files...', 'info');
+            let allData = [];
+            let processedCount = 0;
+
+            Array.from(uploadedFiles).forEach((file) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const content = e.target.result;
+                        let fileData = [];
+                        
+                        // Parse JSON
+                        const data = JSON.parse(content);
+                        fileData = Array.isArray(data) ? data : [data];
+                        
+                        allData = allData.concat(fileData);
+                        
+                    } catch (error) {
+                        console.error(`Error parsing ${file.name}:`, error);
+                        showStatus(`Error parsing ${file.name}: ${error.message}`, 'error');
+                    }
+                    
+                    processedCount++;
+                    
+                    if (processedCount === uploadedFiles.length) {
+                        if (allData.length > 0) {
+                            sprintData = allData.map(item => enhanceDataItem(item));
+                            generateCompleteDashboard();
+                            showStatus(`Successfully loaded ${sprintData.length} Sprint 18 work items! 🎉`, 'success');
+                        } else {
+                            showStatus('No valid data found in uploaded files.', 'error');
+                        }
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+
+        function loadFullSprintData() {
+            try {
+                sprintData = fullSprintData.map(item => enhanceDataItem(item));
+                generateCompleteDashboard();
+                showStatus('Complete Sprint 18 analysis loaded with all metrics! ✨', 'success');
+            } catch (error) {
+                console.error('Error loading Sprint data:', error);
+                showStatus('Error loading Sprint data: ' + error.message, 'error');
+            }
+        }
+
+        function clearData() {
+            sprintData = [];
+            uploadedFiles = null;
+            document.getElementById('jsonFileInput').value = '';
+            document.getElementById('processBtn').disabled = true;
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('chartsSection').style.display = 'none';
+            document.getElementById('dataSummary').style.display = 'none';
+            
+            document.getElementById('kpiCards').innerHTML = `
+                <div class="kpi-card sprint18">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-value">Ready</div>
+                    <div class="kpi-label">Sprint 18 Analysis</div>
+                    <div class="kpi-sublabel">Load data to begin analysis</div>
+                </div>
+            `;
+            
+            showStatus('Data cleared. Ready for new Sprint 18 analysis.', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = message;
+            statusDiv.className = `status-message status-${type}`;
+            
+            setTimeout(() => {
+                statusDiv.className = 'status-message status-info';
+                statusDiv.innerHTML = '🎯 Ready for Sprint 18 analysis';
+            }, 5000);
+        }
+
+        function enhanceDataItem(item) {
+            const enhanced = { ...item };
+            
+            // Parse basic fields
+            enhanced.id = item.ID || item.id;
+            enhanced.workItemType = item["Work Item Type"] || item.workItemType || "Task";
+            enhanced.title = item["Title 1"] || item.Title || item.title || "Untitled";
+            enhanced.state = item.State || item.state || "New";
+            enhanced.storyPoints = parseInt(item["Story Points"] || item.story_points || item.storyPoints || 0);
+            
+            // Clean assignee
+            const assignedTo = item["Assigned To"] || item.assignedTo || "Unassigned";
+            enhanced.assigneeName = assignedTo.includes('<') ? assignedTo.split('<')[0].trim() : assignedTo.trim();
+            
+            // Extract team from area path
+            const areaPath = item["Area Path"] || item.areaPath || "";
+            enhanced.team = areaPath.includes('Defenders') ? 'Defenders' : 
+                         areaPath.includes('Strikers') ? 'Strikers' : 'Other';
+            
+            // GenAI detection
+            const tags = (item.Tags || item.tags || "").toLowerCase();
+            enhanced.isGenAI = tags.includes('genai') || tags.includes('ai') || tags.includes('intelligent') || tags.includes('smart');
+            
+            // Automation detection
+            enhanced.isAutomation = tags.includes('automation') || enhanced.title.toLowerCase().includes('automation') || 
+                                  enhanced.title.toLowerCase().includes('script') || enhanced.title.toLowerCase().includes('suite');
+            
+            // Task categorization
+            enhanced.category = categorizeTask(enhanced.title);
+            
+            // Calculate productivity metrics
+            enhanced.complexity = calculateComplexity(enhanced.storyPoints, enhanced.workItemType);
+            enhanced.isCompleted = enhanced.state === 'Closed' || enhanced.state === 'Resolved';
+            
+            return enhanced;
+        }
+
+        function categorizeTask(title) {
+            const titleLower = title.toLowerCase();
+            if (titleLower.includes('genai') || titleLower.includes('intelligent') || titleLower.includes('smart')) return 'GenAI Enhancement';
+            if (titleLower.includes('automation') || titleLower.includes('script')) return 'Test Automation';
+            if (titleLower.includes('performance') || titleLower.includes('optimization')) return 'Performance';
+            if (titleLower.includes('bug') || titleLower.includes('fix')) return 'Bug Fix';
+            if (titleLower.includes('framework') || titleLower.includes('infrastructure')) return 'Framework';
+            if (titleLower.includes('api') || titleLower.includes('service')) return 'API Development';
+            return 'Feature Development';
+        }
+
+        function calculateComplexity(storyPoints, workItemType) {
+            let complexity = storyPoints || 0;
+            if (workItemType === 'Tech Story') complexity += 2;
+            if (workItemType === 'Bug') complexity += 1;
+            return Math.max(complexity, 1);
+        }
+
+        function generateCompleteDashboard() {
+            generateKPICards();
+            generateDataSummary();
+            generateAllCharts();
+            document.getElementById('chartsSection').style.display = 'block';
+        }
+
+        function generateKPICards() {
+            const kpiContainer = document.getElementById('kpiCards');
+            
+            const totalItems = sprintData.length;
+            const totalStoryPoints = sprintData.reduce((sum, item) => sum + item.storyPoints, 0);
+            const genaiItems = sprintData.filter(item => item.isGenAI).length;
+            const automationItems = sprintData.filter(item => item.isAutomation).length;
+            const completedItems = sprintData.filter(item => item.isCompleted).length;
+            const completionRate = totalItems > 0 ? (completedItems / totalItems * 100) : 0;
+            const genaiAdoption = totalItems > 0 ? (genaiItems / totalItems * 100) : 0;
+            const avgComplexity = totalItems > 0 ? sprintData.reduce((sum, item) => sum + item.complexity, 0) / totalItems : 0;
+            
+            const kpis = [
+                {
+                    icon: '📈', label: 'Total Work Items', value: totalItems, suffix: '', 
+                    cssClass: 'sprint18', sublabel: `${completedItems} completed (${completionRate.toFixed(1)}%)`
+                },
+                {
+                    icon: '⭐', label: 'Total Story Points', value: totalStoryPoints, suffix: '', 
+                    cssClass: 'productivity', sublabel: `Avg ${(totalStoryPoints/totalItems).toFixed(1)} per item`
+                },
+                {
+                    icon: '🤖', label: 'GenAI Adoption', value: genaiAdoption.toFixed(1), suffix: '%', 
+                    cssClass: 'genai', sublabel: `${genaiItems} items use GenAI`
+                },
+                {
+                    icon: '🔧', label: 'Automation Items', value: automationItems, suffix: '', 
+                    cssClass: 'automation', sublabel: `${(automationItems/totalItems*100).toFixed(1)}% of total`
+                },
+                {
+                    icon: '🎯', label: 'Avg Complexity', value: avgComplexity.toFixed(1), suffix: '', 
+                    cssClass: 'testing', sublabel: 'Based on story points & type'
+                },
+                {
+                    icon: '📊', label: 'Sprint 18 Cases', value: 185, suffix: '', 
+                    cssClass: 'genai', sublabel: 'GenAI test cases generated'
+                }
+            ];
+            
+            kpiContainer.innerHTML = kpis.map(kpi => `
+                <div class="kpi-card ${kpi.cssClass}">
+                    <div class="kpi-icon">${kpi.icon}</div>
+                    <div class="kpi-value">${kpi.value}${kpi.suffix}</div>
+                    <div class="kpi-label">${kpi.label}</div>
+                    <div class="kpi-sublabel">${kpi.sublabel}</div>
+                </div>
+            `).join('');
+        }
+
+        function generateDataSummary() {
+            const dataSummary = document.getElementById('dataSummary');
+            
+            const teams = [...new Set(sprintData.map(item => item.team))];
+            const workItemTypes = [...new Set(sprintData.map(item => item.workItemType))];
+            const categories = [...new Set(sprintData.map(item => item.category))];
+            
+            dataSummary.innerHTML = `
+                <h4>📊 Sprint 18 Data Overview</h4>
+                <p><strong>Teams:</strong> ${teams.join(', ')} | 
+                <strong>Work Item Types:</strong> ${workItemTypes.join(', ')} | 
+                <strong>Categories:</strong> ${categories.join(', ')}</p>
+            `;
+            dataSummary.style.display = 'block';
+        }
+
+        function generateAllCharts() {
+            generateWorkItemChart();
+            generateStoryPointsChart();
+            generateStatusChart();
+            generateTeamChart();
+            generateGenAITrendChart();
+            generateTeamPointsChart();
+            generatePerformanceChart();
+            generateCategoryChart();
+            generateContributorChart();
+            generateComprehensiveChart();
+        }
+
+        function generateWorkItemChart() {
+            const workItemCounts = {};
+            sprintData.forEach(item => {
+                workItemCounts[item.workItemType] = (workItemCounts[item.workItemType] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(workItemCounts),
+                labels: Object.keys(workItemCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('workItemChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateStoryPointsChart() {
+            const pointRanges = {'1-5': 0, '6-10': 0, '11-15': 0, '16-20': 0, '21+': 0};
+            
+            sprintData.forEach(item => {
+                const points = item.storyPoints;
+                if (points <= 5) pointRanges['1-5']++;
+                else if (points <= 10) pointRanges['6-10']++;
+                else if (points <= 15) pointRanges['11-15']++;
+                else if (points <= 20) pointRanges['16-20']++;
+                else pointRanges['21+']++;
+            });
+            
+            const data = [{
+                x: Object.keys(pointRanges),
+                y: Object.values(pointRanges),
+                type: 'bar',
+                marker: {
+                    color: ['#2ECC71', '#3498DB', '#F39C12', '#E74C3C', '#9B59B6']
+                }
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Story Points Range'},
+                yaxis: {title: 'Count'},
+                margin: {t: 20, b: 60, l: 50, r: 20}
+            };
+            
+            Plotly.newPlot('storyPointsChart', data, layout, {responsive: true});
+        }
+
+        function generateStatusChart() {
+            const statusCounts = {};
+            sprintData.forEach(item => {
+                statusCounts[item.state] = (statusCounts[item.state] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(statusCounts),
+                labels: Object.keys(statusCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#2ECC71', '#F39C12', '#3498DB', '#E74C3C']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('statusChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateTeamChart() {
+            const teamCounts = {};
+            sprintData.forEach(item => {
+                teamCounts[item.team] = (teamCounts[item.team] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(teamCounts),
+                labels: Object.keys(teamCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#9B59B6', '#E67E22', '#95A5A6']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('teamChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateGenAITrendChart() {
+            const data = [{
+                x: genaiTestCasesData.map(d => d.sprint.replace('Sprint ', 'S')),
+                y: genaiTestCasesData.map(d => d.cases),
+                type: 'bar',
+                marker: {
+                    color: genaiTestCasesData.map(d => d.color)
+                },
+                text: genaiTestCasesData.map(d => d.cases),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Sprint'},
+                yaxis: {title: 'GenAI Test Cases'},
+                margin: {t: 20, b: 60, l: 60, r: 20},
+                annotations: [{
+                    x: 4, y: 185,
+                    text: 'Sprint 18<br>185 cases',
+                    showarrow: true,
+                    arrowcolor: '#E74C3C',
+                    font: {color: '#E74C3C', size: 12}
+                }]
+            };
+            
+            Plotly.newPlot('genaiTrendChart', data, layout, {responsive: true});
+        }
+
+        function generateTeamPointsChart() {
+            const teamPoints = {};
+            sprintData.forEach(item => {
+                teamPoints[item.team] = (teamPoints[item.team] || 0) + item.storyPoints;
+            });
+            
+            const data = [{
+                x: Object.keys(teamPoints),
+                y: Object.values(teamPoints),
+                type: 'bar',
+                marker: {
+                    color: ['#9B59B6', '#E67E22', '#95A5A6']
+                },
+                text: Object.values(teamPoints),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Team'},
+                yaxis: {title: 'Total Story Points'},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            };
+            
+            Plotly.newPlot('teamPointsChart', data, layout, {responsive: true});
+        }
+
+        function generatePerformanceChart() {
+            const genaiItems = sprintData.filter(item => item.isGenAI);
+            const nonGenaiItems = sprintData.filter(item => !item.isGenAI);
+            
+            const genaiCompletion = genaiItems.length > 0 ? genaiItems.filter(item => item.isCompleted).length / genaiItems.length * 100 : 0;
+            const nonGenaiCompletion = nonGenaiItems.length > 0 ? nonGenaiItems.filter(item => item.isCompleted).length / nonGenaiItems.length * 100 : 0;
+            
+            const genaiAvgPoints = genaiItems.length > 0 ? genaiItems.reduce((sum, item) => sum + item.storyPoints, 0) / genaiItems.length : 0;
+            const nonGenaiAvgPoints = nonGenaiItems.length > 0 ? nonGenaiItems.reduce((sum, item) => sum + item.storyPoints, 0) / nonGenaiItems.length : 0;
+            
+            const trace1 = {
+                x: ['GenAI Tasks', 'Non-GenAI Tasks'],
+                y: [genaiCompletion, nonGenaiCompletion],
+                name: 'Completion Rate (%)',
+                type: 'bar',
+                marker: {color: ['#E74C3C', '#95A5A6']}
+            };
+            
+            const trace2 = {
+                x: ['GenAI Tasks', 'Non-GenAI Tasks'],
+                y: [genaiAvgPoints, nonGenaiAvgPoints],
+                name: 'Avg Story Points',
+                type: 'scatter',
+                mode: 'lines+markers',
+                yaxis: 'y2',
+                line: {color: '#2ECC71', width: 3},
+                marker: {size: 10}
+            };
+            
+            const layout = {
+                xaxis: {title: 'Task Type'},
+                yaxis: {title: 'Completion Rate (%)', side: 'left'},
+                yaxis2: {title: 'Avg Story Points', side: 'right', overlaying: 'y'},
+                margin: {t: 20, b: 60, l: 60, r: 60},
+                legend: {x: 0, y: 1.1, orientation: 'h'}
+            };
+            
+            Plotly.newPlot('performanceChart', [trace1, trace2], layout, {responsive: true});
+        }
+
+        function generateCategoryChart() {
+            const categoryCounts = {};
+            sprintData.forEach(item => {
+                categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+            });
+            
+            const sortedCategories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
+            
+            const data = [{
+                x: sortedCategories.map(([cat]) => cat),
+                y: sortedCategories.map(([, count]) => count),
+                type: 'bar',
+                marker: {
+                    color: ['#E74C3C', '#3498DB', '#2ECC71', '#F39C12', '#9B59B6', '#E67E22', '#1ABC9C']
+                },
+                text: sortedCategories.map(([, count]) => count),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Category', tickangle: -45},
+                yaxis: {title: 'Count'},
+                margin: {t: 20, b: 120, l: 60, r: 20}
+            };
+            
+            Plotly.newPlot('categoryChart', data, layout, {responsive: true});
+        }
+
+        function generateContributorChart() {
+            const contributorData = {};
+            sprintData.forEach(item => {
+                if (!contributorData[item.assigneeName]) {
+                    contributorData[item.assigneeName] = {
+                        totalPoints: 0,
+                        completedPoints: 0,
+                        items: 0
+                    };
+                }
+                contributorData[item.assigneeName].totalPoints += item.storyPoints;
+                contributorData[item.assigneeName].items += 1;
+                if (item.isCompleted) {
+                    contributorData[item.assigneeName].completedPoints += item.storyPoints;
+                }
+            });
+            
+            const contributors = Object.entries(contributorData)
+                .sort((a, b) => b[1].totalPoints - a[1].totalPoints)
+                .slice(0, 10);
+            
+            const trace1 = {
+                x: contributors.map(([name]) => name.length > 15 ? name.substring(0, 15) + '...' : name),
+                y: contributors.map(([, data]) => data.totalPoints),
+                name: 'Total Points',
+                type: 'bar',
+                marker: {color: '#3498DB'}
+            };
+            
+            const trace2 = {
+                x: contributors.map(([name]) => name.length > 15 ? name.substring(0, 15) + '...' : name),
+                y: contributors.map(([, data]) => data.completedPoints),
+                name: 'Completed Points',
+                type: 'bar',
+                marker: {color: '#2ECC71'}
+            };
+            
+            const layout = {
+                barmode: 'group',
+                xaxis: {title: 'Contributors', tickangle: -45},
+                yaxis: {title: 'Story Points'},
+                margin: {t: 20, b: 120, l: 60, r: 20},
+                legend: {x: 0, y: 1.1, orientation: 'h'}
+            };
+            
+            Plotly.newPlot('contributorChart', [trace1, trace2], layout, {responsive: true});
+        }
+
+        function generateComprehensiveChart() {
+            const teamMetrics = {};
+            
+            sprintData.forEach(item => {
+                if (!teamMetrics[item.team]) {
+                    teamMetrics[item.team] = {
+                        totalItems: 0,
+                        genaiItems: 0,
+                        automationItems: 0,
+                        completedItems: 0,
+                        totalPoints: 0
+                    };
+                }
+                
+                teamMetrics[item.team].totalItems += 1;
+                teamMetrics[item.team].totalPoints += item.storyPoints;
+                if (item.isGenAI) teamMetrics[item.team].genaiItems += 1;
+                if (item.isAutomation) teamMetrics[item.team].automationItems += 1;
+                if (item.isCompleted) teamMetrics[item.team].completedItems += 1;
+            });
+            
+            const teams = Object.keys(teamMetrics);
+            
+            const trace1 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].totalItems),
+                name: 'Total Items',
+                type: 'bar',
+                marker: {color: '#3498DB'}
+            };
+            
+            const trace2 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].genaiItems),
+                name: 'GenAI Items',
+                type: 'bar',
+                marker: {color: '#E74C3C'}
+            };
+            
+            const trace3 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].automationItems),
+                name: 'Automation Items',
+                type: 'bar',
+                marker: {color: '#9B59B6'}
+            };
+            
+            const trace4 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].completedItems / teamMetrics[team].totalItems * 100),
+                name: 'Completion Rate (%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                yaxis: 'y2',
+                line: {color: '#2ECC71', width: 4},
+                marker: {size: 12}
+            };
+            
+            const layout = {
+                xaxis: {title: 'Team'},
+                yaxis: {title: 'Number of Items', side: 'left'},
+                yaxis2: {title: 'Completion Rate (%)', side: 'right', overlaying: 'y'},
+                margin: {t: 40, b: 60, l: 60, r: 60},
+                legend: {x: 0, y: 1.15, orientation: 'h'},
+                title: {
+                    text: 'Sprint 18 Team Performance Metrics',
+                    x: 0.5,
+                    font: {size: 16, color: '#2c3e50'}
+                }
+            };
+            
+            Plotly.newPlot('comprehensiveChart', [trace1, trace2, trace3, trace4], layout, {responsive: true});
+        }
+
+        // Initialize the application
+        window.addEventListener('load', function() {
+            setupFileHandling();
+        });
+    </script>
+</body>
+</html>
+
+
+
+							<script>
+                            	
+        let sprintData = [];
+        let uploadedFiles = null;
+
+        // Enhanced Sprint 18 sample data based on your JSON structure
+        const fullSprintData = [
+            {
+                "ID": 542898,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] [Agnostic flow] Script size under 150KB for any lazy loaded script else build should fail",
+                "State": "Closed",
+                "Assigned To": "Jitendra Singh <jitendra1.singh@igglobal.com>",
+                "Tags": "QANotNeeded; S18 2025 planned",
+                "Story Points": 12,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542899,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] GenAI Test Case Generation Framework",
+                "State": "Closed",
+                "Assigned To": "Sarah Johnson <sarah.johnson@igglobal.com>",
+                "Tags": "GenAI; S18 2025 planned",
+                "Story Points": 15,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542900,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Automated Test Suite Enhancement",
+                "State": "Closed",
+                "Assigned To": "Mike Wilson <mike.wilson@igglobal.com>",
+                "Tags": "Automation; S18 2025 planned",
+                "Story Points": 8,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542901,
+                "Work Item Type": "Bug",
+                "Title 1": "[OPUS 2.0] Fix GenAI Integration Issues",
+                "State": "Resolved",
+                "Assigned To": "Emily Davis <emily.davis@igglobal.com>",
+                "Tags": "GenAI; BugFix; S18 2025",
+                "Story Points": 5,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542902,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] Performance Optimization for GenAI Tools",
+                "State": "In Progress",
+                "Assigned To": "Alex Turner <alex.turner@igglobal.com>",
+                "Tags": "GenAI; Performance; S18 2025 planned",
+                "Story Points": 20,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542903,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Smart Test Data Generation",
+                "State": "Closed",
+                "Assigned To": "Lisa Chen <lisa.chen@igglobal.com>",
+                "Tags": "GenAI; TestData; S18 2025 planned",
+                "Story Points": 13,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542904,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] API Test Automation Enhancement",
+                "State": "Closed",
+                "Assigned To": "John Smith <john.smith@igglobal.com>",
+                "Tags": "API; Automation; S18 2025 planned",
+                "Story Points": 10,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542905,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Code Review Assistant",
+                "State": "New",
+                "Assigned To": "David Kim <david.kim@igglobal.com>",
+                "Tags": "GenAI; CodeReview; S18 2025 planned",
+                "Story Points": 18,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542906,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Intelligent Bug Detection System",
+                "State": "Closed",
+                "Assigned To": "Rachel Green <rachel.green@igglobal.com>",
+                "Tags": "GenAI; BugDetection; S18 2025 planned",
+                "Story Points": 16,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542907,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Cross-Browser Testing Automation",
+                "State": "Closed",
+                "Assigned To": "Michael Brown <michael.brown@igglobal.com>",
+                "Tags": "CrossBrowser; Automation; S18 2025 planned",
+                "Story Points": 7,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542908,
+                "Work Item Type": "Bug",
+                "Title 1": "[OPUS 2.0] Memory Leak in Test Framework",
+                "State": "Resolved",
+                "Assigned To": "Jennifer Lee <jennifer.lee@igglobal.com>",
+                "Tags": "Performance; Framework; S18 2025",
+                "Story Points": 3,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542909,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Test Report Generator",
+                "State": "In Progress",
+                "Assigned To": "Chris Wilson <chris.wilson@igglobal.com>",
+                "Tags": "GenAI; Reporting; S18 2025 planned",
+                "Story Points": 14,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542910,
+                "Work Item Type": "User Story",
+                "Title 1": "[OPUS 2.0] Smart Test Case Prioritization",
+                "State": "Closed",
+                "Assigned To": "Anna Martinez <anna.martinez@igglobal.com>",
+                "Tags": "GenAI; Prioritization; S18 2025 planned",
+                "Story Points": 11,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            },
+            {
+                "ID": 542911,
+                "Work Item Type": "Task",
+                "Title 1": "[OPUS 2.0] Mobile Test Automation Suite",
+                "State": "Closed",
+                "Assigned To": "Tom Anderson <tom.anderson@igglobal.com>",
+                "Tags": "Mobile; Automation; S18 2025 planned",
+                "Story Points": 9,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Defenders"
+            },
+            {
+                "ID": 542912,
+                "Work Item Type": "Tech Story",
+                "Title 1": "[OPUS 2.0] GenAI Performance Metrics Dashboard",
+                "State": "New",
+                "Assigned To": "Sofia Rodriguez <sofia.rodriguez@igglobal.com>",
+                "Tags": "GenAI; Metrics; Dashboard; S18 2025 planned",
+                "Story Points": 17,
+                "Iteration Path": "Main\\2025\\PI-34\\2025-18",
+                "Area Path": "Main\\Neighborly Web and Mobile Team\\Strikers"
+            }
+        ];
+
+        // GenAI test cases trend with Sprint 18
+        const genaiTestCasesData = [
+            { sprint: 'Sprint 14', cases: 267, color: '#FF9999' },
+            { sprint: 'Sprint 15', cases: 224, color: '#66B2FF' },
+            { sprint: 'Sprint 16', cases: 173, color: '#99FF99' },
+            { sprint: 'Sprint 17', cases: 238, color: '#FF6B6B' },
+            { sprint: 'Sprint 18', cases: 185, color: '#E74C3C' }
+        ];
+
+        // File handling setup
+        function setupFileHandling() {
+            const fileInput = document.getElementById('jsonFileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const processBtn = document.getElementById('processBtn');
+
+            fileInput.addEventListener('change', function(e) {
+                uploadedFiles = e.target.files;
+                if (uploadedFiles && uploadedFiles.length > 0) {
+                    const fileNames = Array.from(uploadedFiles).map(f => f.name).join(', ');
+                    fileInfo.innerHTML = `<strong>📁 Selected Files:</strong> ${fileNames} (${uploadedFiles.length} file${uploadedFiles.length > 1 ? 's' : ''})`;
+                    fileInfo.style.display = 'block';
+                    processBtn.disabled = false;
+                } else {
+                    fileInfo.style.display = 'none';
+                    processBtn.disabled = true;
+                }
+            });
+        }
+
+        function processFiles() {
+            if (!uploadedFiles || uploadedFiles.length === 0) {
+                showStatus('Please select files to upload first.', 'error');
+                return;
+            }
+
+            showStatus('Processing your Sprint 18 files...', 'info');
+            let allData = [];
+            let processedCount = 0;
+
+            Array.from(uploadedFiles).forEach((file) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const content = e.target.result;
+                        let fileData = [];
+                        
+                        // Parse JSON
+                        const data = JSON.parse(content);
+                        fileData = Array.isArray(data) ? data : [data];
+                        
+                        allData = allData.concat(fileData);
+                        
+                    } catch (error) {
+                        console.error(`Error parsing ${file.name}:`, error);
+                        showStatus(`Error parsing ${file.name}: ${error.message}`, 'error');
+                    }
+                    
+                    processedCount++;
+                    
+                    if (processedCount === uploadedFiles.length) {
+                        if (allData.length > 0) {
+                            sprintData = allData.map(item => enhanceDataItem(item));
+                            generateCompleteDashboard();
+                            showStatus(`Successfully loaded ${sprintData.length} Sprint 18 work items! 🎉`, 'success');
+                        } else {
+                            showStatus('No valid data found in uploaded files.', 'error');
+                        }
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+
+        function loadFullSprintData() {
+            try {
+                sprintData = fullSprintData.map(item => enhanceDataItem(item));
+                generateCompleteDashboard();
+                showStatus('Complete Sprint 18 analysis loaded with all metrics! ✨', 'success');
+            } catch (error) {
+                console.error('Error loading Sprint data:', error);
+                showStatus('Error loading Sprint data: ' + error.message, 'error');
+            }
+        }
+
+        function clearData() {
+            sprintData = [];
+            uploadedFiles = null;
+            document.getElementById('jsonFileInput').value = '';
+            document.getElementById('processBtn').disabled = true;
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('chartsSection').style.display = 'none';
+            document.getElementById('dataSummary').style.display = 'none';
+            
+            document.getElementById('kpiCards').innerHTML = `
+                <div class="kpi-card sprint18">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-value">Ready</div>
+                    <div class="kpi-label">Sprint 18 Analysis</div>
+                    <div class="kpi-sublabel">Load data to begin analysis</div>
+                </div>
+            `;
+            
+            showStatus('Data cleared. Ready for new Sprint 18 analysis.', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = message;
+            statusDiv.className = `status-message status-${type}`;
+            
+            setTimeout(() => {
+                statusDiv.className = 'status-message status-info';
+                statusDiv.innerHTML = '🎯 Ready for Sprint 18 analysis';
+            }, 5000);
+        }
+
+        function enhanceDataItem(item) {
+            const enhanced = { ...item };
+            
+            // Parse basic fields
+            enhanced.id = item.ID || item.id;
+            enhanced.workItemType = item["Work Item Type"] || item.workItemType || "Task";
+            enhanced.title = item["Title 1"] || item.Title || item.title || "Untitled";
+            enhanced.state = item.State || item.state || "New";
+            enhanced.storyPoints = parseInt(item["Story Points"] || item.story_points || item.storyPoints || 0);
+            
+            // Clean assignee
+            const assignedTo = item["Assigned To"] || item.assignedTo || "Unassigned";
+            enhanced.assigneeName = assignedTo.includes('<') ? assignedTo.split('<')[0].trim() : assignedTo.trim();
+            
+            // Extract team from area path
+            const areaPath = item["Area Path"] || item.areaPath || "";
+            enhanced.team = areaPath.includes('Defenders') ? 'Defenders' : 
+                         areaPath.includes('Strikers') ? 'Strikers' : 'Other';
+            
+            // GenAI detection
+            const tags = (item.Tags || item.tags || "").toLowerCase();
+            enhanced.isGenAI = tags.includes('genai') || tags.includes('ai') || tags.includes('intelligent') || tags.includes('smart');
+            
+            // Automation detection
+            enhanced.isAutomation = tags.includes('automation') || enhanced.title.toLowerCase().includes('automation') || 
+                                  enhanced.title.toLowerCase().includes('script') || enhanced.title.toLowerCase().includes('suite');
+            
+            // Task categorization
+            enhanced.category = categorizeTask(enhanced.title);
+            
+            // Calculate productivity metrics
+            enhanced.complexity = calculateComplexity(enhanced.storyPoints, enhanced.workItemType);
+            enhanced.isCompleted = enhanced.state === 'Closed' || enhanced.state === 'Resolved';
+            
+            return enhanced;
+        }
+
+        function categorizeTask(title) {
+            const titleLower = title.toLowerCase();
+            if (titleLower.includes('genai') || titleLower.includes('intelligent') || titleLower.includes('smart')) return 'GenAI Enhancement';
+            if (titleLower.includes('automation') || titleLower.includes('script')) return 'Test Automation';
+            if (titleLower.includes('performance') || titleLower.includes('optimization')) return 'Performance';
+            if (titleLower.includes('bug') || titleLower.includes('fix')) return 'Bug Fix';
+            if (titleLower.includes('framework') || titleLower.includes('infrastructure')) return 'Framework';
+            if (titleLower.includes('api') || titleLower.includes('service')) return 'API Development';
+            return 'Feature Development';
+        }
+
+        function calculateComplexity(storyPoints, workItemType) {
+            let complexity = storyPoints || 0;
+            if (workItemType === 'Tech Story') complexity += 2;
+            if (workItemType === 'Bug') complexity += 1;
+            return Math.max(complexity, 1);
+        }
+
+        function generateCompleteDashboard() {
+            generateKPICards();
+            generateDataSummary();
+            generateAllCharts();
+            document.getElementById('chartsSection').style.display = 'block';
+        }
+
+        function generateKPICards() {
+            const kpiContainer = document.getElementById('kpiCards');
+            
+            const totalItems = sprintData.length;
+            const totalStoryPoints = sprintData.reduce((sum, item) => sum + item.storyPoints, 0);
+            const genaiItems = sprintData.filter(item => item.isGenAI).length;
+            const automationItems = sprintData.filter(item => item.isAutomation).length;
+            const completedItems = sprintData.filter(item => item.isCompleted).length;
+            const completionRate = totalItems > 0 ? (completedItems / totalItems * 100) : 0;
+            const genaiAdoption = totalItems > 0 ? (genaiItems / totalItems * 100) : 0;
+            const avgComplexity = totalItems > 0 ? sprintData.reduce((sum, item) => sum + item.complexity, 0) / totalItems : 0;
+            
+            const kpis = [
+                {
+                    icon: '📈', label: 'Total Work Items', value: totalItems, suffix: '', 
+                    cssClass: 'sprint18', sublabel: `${completedItems} completed (${completionRate.toFixed(1)}%)`
+                },
+                {
+                    icon: '⭐', label: 'Total Story Points', value: totalStoryPoints, suffix: '', 
+                    cssClass: 'productivity', sublabel: `Avg ${(totalStoryPoints/totalItems).toFixed(1)} per item`
+                },
+                {
+                    icon: '🤖', label: 'GenAI Adoption', value: genaiAdoption.toFixed(1), suffix: '%', 
+                    cssClass: 'genai', sublabel: `${genaiItems} items use GenAI`
+                },
+                {
+                    icon: '🔧', label: 'Automation Items', value: automationItems, suffix: '', 
+                    cssClass: 'automation', sublabel: `${(automationItems/totalItems*100).toFixed(1)}% of total`
+                },
+                {
+                    icon: '🎯', label: 'Avg Complexity', value: avgComplexity.toFixed(1), suffix: '', 
+                    cssClass: 'testing', sublabel: 'Based on story points & type'
+                },
+                {
+                    icon: '📊', label: 'Sprint 18 Cases', value: 185, suffix: '', 
+                    cssClass: 'genai', sublabel: 'GenAI test cases generated'
+                }
+            ];
+            
+            kpiContainer.innerHTML = kpis.map(kpi => `
+                <div class="kpi-card ${kpi.cssClass}">
+                    <div class="kpi-icon">${kpi.icon}</div>
+                    <div class="kpi-value">${kpi.value}${kpi.suffix}</div>
+                    <div class="kpi-label">${kpi.label}</div>
+                    <div class="kpi-sublabel">${kpi.sublabel}</div>
+                </div>
+            `).join('');
+        }
+
+        function generateDataSummary() {
+            const dataSummary = document.getElementById('dataSummary');
+            
+            const teams = [...new Set(sprintData.map(item => item.team))];
+            const workItemTypes = [...new Set(sprintData.map(item => item.workItemType))];
+            const categories = [...new Set(sprintData.map(item => item.category))];
+            
+            dataSummary.innerHTML = `
+                <h4>📊 Sprint 18 Data Overview</h4>
+                <p><strong>Teams:</strong> ${teams.join(', ')} | 
+                <strong>Work Item Types:</strong> ${workItemTypes.join(', ')} | 
+                <strong>Categories:</strong> ${categories.join(', ')}</p>
+            `;
+            dataSummary.style.display = 'block';
+        }
+
+        function generateAllCharts() {
+            generateWorkItemChart();
+            generateStoryPointsChart();
+            generateStatusChart();
+            generateTeamChart();
+            generateGenAITrendChart();
+            generateTeamPointsChart();
+            generatePerformanceChart();
+            generateCategoryChart();
+            generateContributorChart();
+            generateComprehensiveChart();
+        }
+
+        function generateWorkItemChart() {
+            const workItemCounts = {};
+            sprintData.forEach(item => {
+                workItemCounts[item.workItemType] = (workItemCounts[item.workItemType] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(workItemCounts),
+                labels: Object.keys(workItemCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('workItemChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateStoryPointsChart() {
+            const pointRanges = {'1-5': 0, '6-10': 0, '11-15': 0, '16-20': 0, '21+': 0};
+            
+            sprintData.forEach(item => {
+                const points = item.storyPoints;
+                if (points <= 5) pointRanges['1-5']++;
+                else if (points <= 10) pointRanges['6-10']++;
+                else if (points <= 15) pointRanges['11-15']++;
+                else if (points <= 20) pointRanges['16-20']++;
+                else pointRanges['21+']++;
+            });
+            
+            const data = [{
+                x: Object.keys(pointRanges),
+                y: Object.values(pointRanges),
+                type: 'bar',
+                marker: {
+                    color: ['#2ECC71', '#3498DB', '#F39C12', '#E74C3C', '#9B59B6']
+                }
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Story Points Range'},
+                yaxis: {title: 'Count'},
+                margin: {t: 20, b: 60, l: 50, r: 20}
+            };
+            
+            Plotly.newPlot('storyPointsChart', data, layout, {responsive: true});
+        }
+
+        function generateStatusChart() {
+            const statusCounts = {};
+            sprintData.forEach(item => {
+                statusCounts[item.state] = (statusCounts[item.state] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(statusCounts),
+                labels: Object.keys(statusCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#2ECC71', '#F39C12', '#3498DB', '#E74C3C']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('statusChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateTeamChart() {
+            const teamCounts = {};
+            sprintData.forEach(item => {
+                teamCounts[item.team] = (teamCounts[item.team] || 0) + 1;
+            });
+            
+            const data = [{
+                values: Object.values(teamCounts),
+                labels: Object.keys(teamCounts),
+                type: 'pie',
+                hole: 0.4,
+                marker: {
+                    colors: ['#9B59B6', '#E67E22', '#95A5A6']
+                },
+                textinfo: 'label+percent+value'
+            }];
+            
+            Plotly.newPlot('teamChart', data, {margin: {t: 0, b: 0, l: 0, r: 0}}, {responsive: true});
+        }
+
+        function generateGenAITrendChart() {
+            const data = [{
+                x: genaiTestCasesData.map(d => d.sprint.replace('Sprint ', 'S')),
+                y: genaiTestCasesData.map(d => d.cases),
+                type: 'bar',
+                marker: {
+                    color: genaiTestCasesData.map(d => d.color)
+                },
+                text: genaiTestCasesData.map(d => d.cases),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Sprint'},
+                yaxis: {title: 'GenAI Test Cases'},
+                margin: {t: 20, b: 60, l: 60, r: 20},
+                annotations: [{
+                    x: 4, y: 185,
+                    text: 'Sprint 18<br>185 cases',
+                    showarrow: true,
+                    arrowcolor: '#E74C3C',
+                    font: {color: '#E74C3C', size: 12}
+                }]
+            };
+            
+            Plotly.newPlot('genaiTrendChart', data, layout, {responsive: true});
+        }
+
+        function generateTeamPointsChart() {
+            const teamPoints = {};
+            sprintData.forEach(item => {
+                teamPoints[item.team] = (teamPoints[item.team] || 0) + item.storyPoints;
+            });
+            
+            const data = [{
+                x: Object.keys(teamPoints),
+                y: Object.values(teamPoints),
+                type: 'bar',
+                marker: {
+                    color: ['#9B59B6', '#E67E22', '#95A5A6']
+                },
+                text: Object.values(teamPoints),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Team'},
+                yaxis: {title: 'Total Story Points'},
+                margin: {t: 20, b: 60, l: 60, r: 20}
+            };
+            
+            Plotly.newPlot('teamPointsChart', data, layout, {responsive: true});
+        }
+
+        function generatePerformanceChart() {
+            const genaiItems = sprintData.filter(item => item.isGenAI);
+            const nonGenaiItems = sprintData.filter(item => !item.isGenAI);
+            
+            const genaiCompletion = genaiItems.length > 0 ? genaiItems.filter(item => item.isCompleted).length / genaiItems.length * 100 : 0;
+            const nonGenaiCompletion = nonGenaiItems.length > 0 ? nonGenaiItems.filter(item => item.isCompleted).length / nonGenaiItems.length * 100 : 0;
+            
+            const genaiAvgPoints = genaiItems.length > 0 ? genaiItems.reduce((sum, item) => sum + item.storyPoints, 0) / genaiItems.length : 0;
+            const nonGenaiAvgPoints = nonGenaiItems.length > 0 ? nonGenaiItems.reduce((sum, item) => sum + item.storyPoints, 0) / nonGenaiItems.length : 0;
+            
+            const trace1 = {
+                x: ['GenAI Tasks', 'Non-GenAI Tasks'],
+                y: [genaiCompletion, nonGenaiCompletion],
+                name: 'Completion Rate (%)',
+                type: 'bar',
+                marker: {color: ['#E74C3C', '#95A5A6']}
+            };
+            
+            const trace2 = {
+                x: ['GenAI Tasks', 'Non-GenAI Tasks'],
+                y: [genaiAvgPoints, nonGenaiAvgPoints],
+                name: 'Avg Story Points',
+                type: 'scatter',
+                mode: 'lines+markers',
+                yaxis: 'y2',
+                line: {color: '#2ECC71', width: 3},
+                marker: {size: 10}
+            };
+            
+            const layout = {
+                xaxis: {title: 'Task Type'},
+                yaxis: {title: 'Completion Rate (%)', side: 'left'},
+                yaxis2: {title: 'Avg Story Points', side: 'right', overlaying: 'y'},
+                margin: {t: 20, b: 60, l: 60, r: 60},
+                legend: {x: 0, y: 1.1, orientation: 'h'}
+            };
+            
+            Plotly.newPlot('performanceChart', [trace1, trace2], layout, {responsive: true});
+        }
+
+        function generateCategoryChart() {
+            const categoryCounts = {};
+            sprintData.forEach(item => {
+                categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+            });
+            
+            const sortedCategories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
+            
+            const data = [{
+                x: sortedCategories.map(([cat]) => cat),
+                y: sortedCategories.map(([, count]) => count),
+                type: 'bar',
+                marker: {
+                    color: ['#E74C3C', '#3498DB', '#2ECC71', '#F39C12', '#9B59B6', '#E67E22', '#1ABC9C']
+                },
+                text: sortedCategories.map(([, count]) => count),
+                textposition: 'outside'
+            }];
+            
+            const layout = {
+                xaxis: {title: 'Category', tickangle: -45},
+                yaxis: {title: 'Count'},
+                margin: {t: 20, b: 120, l: 60, r: 20}
+            };
+            
+            Plotly.newPlot('categoryChart', data, layout, {responsive: true});
+        }
+
+        function generateContributorChart() {
+            const contributorData = {};
+            sprintData.forEach(item => {
+                if (!contributorData[item.assigneeName]) {
+                    contributorData[item.assigneeName] = {
+                        totalPoints: 0,
+                        completedPoints: 0,
+                        items: 0
+                    };
+                }
+                contributorData[item.assigneeName].totalPoints += item.storyPoints;
+                contributorData[item.assigneeName].items += 1;
+                if (item.isCompleted) {
+                    contributorData[item.assigneeName].completedPoints += item.storyPoints;
+                }
+            });
+            
+            const contributors = Object.entries(contributorData)
+                .sort((a, b) => b[1].totalPoints - a[1].totalPoints)
+                .slice(0, 10);
+            
+            const trace1 = {
+                x: contributors.map(([name]) => name.length > 15 ? name.substring(0, 15) + '...' : name),
+                y: contributors.map(([, data]) => data.totalPoints),
+                name: 'Total Points',
+                type: 'bar',
+                marker: {color: '#3498DB'}
+            };
+            
+            const trace2 = {
+                x: contributors.map(([name]) => name.length > 15 ? name.substring(0, 15) + '...' : name),
+                y: contributors.map(([, data]) => data.completedPoints),
+                name: 'Completed Points',
+                type: 'bar',
+                marker: {color: '#2ECC71'}
+            };
+            
+            const layout = {
+                barmode: 'group',
+                xaxis: {title: 'Contributors', tickangle: -45},
+                yaxis: {title: 'Story Points'},
+                margin: {t: 20, b: 120, l: 60, r: 20},
+                legend: {x: 0, y: 1.1, orientation: 'h'}
+            };
+            
+            Plotly.newPlot('contributorChart', [trace1, trace2], layout, {responsive: true});
+        }
+
+        function generateComprehensiveChart() {
+            const teamMetrics = {};
+            
+            sprintData.forEach(item => {
+                if (!teamMetrics[item.team]) {
+                    teamMetrics[item.team] = {
+                        totalItems: 0,
+                        genaiItems: 0,
+                        automationItems: 0,
+                        completedItems: 0,
+                        totalPoints: 0
+                    };
+                }
+                
+                teamMetrics[item.team].totalItems += 1;
+                teamMetrics[item.team].totalPoints += item.storyPoints;
+                if (item.isGenAI) teamMetrics[item.team].genaiItems += 1;
+                if (item.isAutomation) teamMetrics[item.team].automationItems += 1;
+                if (item.isCompleted) teamMetrics[item.team].completedItems += 1;
+            });
+            
+            const teams = Object.keys(teamMetrics);
+            
+            const trace1 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].totalItems),
+                name: 'Total Items',
+                type: 'bar',
+                marker: {color: '#3498DB'}
+            };
+            
+            const trace2 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].genaiItems),
+                name: 'GenAI Items',
+                type: 'bar',
+                marker: {color: '#E74C3C'}
+            };
+            
+            const trace3 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].automationItems),
+                name: 'Automation Items',
+                type: 'bar',
+                marker: {color: '#9B59B6'}
+            };
+            
+            const trace4 = {
+                x: teams,
+                y: teams.map(team => teamMetrics[team].completedItems / teamMetrics[team].totalItems * 100),
+                name: 'Completion Rate (%)',
+                type: 'scatter',
+                mode: 'lines+markers',
+                yaxis: 'y2',
+                line: {color: '#2ECC71', width: 4},
+                marker: {size: 12}
+            };
+            
+            const layout = {
+                xaxis: {title: 'Team'},
+                yaxis: {title: 'Number of Items', side: 'left'},
+                yaxis2: {title: 'Completion Rate (%)', side: 'right', overlaying: 'y'},
+                margin: {t: 40, b: 60, l: 60, r: 60},
+                legend: {x: 0, y: 1.15, orientation: 'h'},
+                title: {
+                    text: 'Sprint 18 Team Performance Metrics',
+                    x: 0.5,
+                    font: {size: 16, color: '#2c3e50'}
+                }
+            };
+            
+            Plotly.newPlot('comprehensiveChart', [trace1, trace2, trace3, trace4], layout, {responsive: true});
+        }
+
+        // Initialize the application
+        window.addEventListener('load', function() {
+            setupFileHandling();
+        });
+    
+
+							</script>
+                        </body>
+                        </html>
+                    
