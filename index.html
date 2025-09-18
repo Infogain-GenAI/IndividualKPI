@@ -37,9 +37,6 @@
             font-size: 0.9em;
         }
         .readme-link {
-            position: absolute;
-            top: 25px;
-            right: 25px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             padding: 8px 16px;
@@ -49,9 +46,16 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
+        }
+        .header-links {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 10px;
         }
         .readme-link:hover {
             background: rgba(255, 255, 255, 0.2);
@@ -446,13 +450,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <a href="QA_Insights.html" target="_blank" class="readme-link">
-                📖 QA Insights
-            </a>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-            <a href="readme.html" target="_blank" class="readme-link">
-                📖 ReadMe
-            </a>
+            <div class="header-links">
+                <a href="QA_Insights.html" target="_blank" class="readme-link">
+                    � QA Insights
+                </a>
+                <a href="readme.html" target="_blank" class="readme-link">
+                    📖 ReadMe
+                </a>
+            </div>
             <h1>📊 Nbly Dashboards </h1>
             <p>Interactive KPI dashboard with filtering and expand/collapse functionality</p>
         </div>
