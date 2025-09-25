@@ -96,8 +96,8 @@
     </div>
 
     <script>
-        // Your complete data from the image
-        const brandData =  {
+        // Original nested data structure
+        const originalBrandData =  {
             "June": {
                 "DVW": {"Good": 621, "NI": 114, "Poor": 0},
                 "MRE": {"Good": 150, "NI": 1543, "Poor": 0},
@@ -200,27 +200,49 @@
             }
         };
 
-        // Create labels and data arrays
+        // Convert to flat array format: {brand: 'DVW', TimeFrame: 'June', good: 621, ni: 114, poor: 0}
+        const brandData = [];
+        Object.keys(originalBrandData).forEach(timeFrame => {
+            Object.keys(originalBrandData[timeFrame]).forEach(brand => {
+                const data = originalBrandData[timeFrame][brand];
+                brandData.push({
+                    brand: brand,
+                    TimeFrame: timeFrame,
+                    good: data.Good,
+                    ni: data.NI,
+                    poor: data.Poor
+                });
+            });
+        });
+
+        // Create labels and data arrays from flat array format
         const labels = [];
         const goodData = [];
         const niData = [];
         const poorData = [];
         const separatorIndices = [];
 
+        // Group data by brand to maintain brand separators
+        const brandGroups = {};
+        brandData.forEach(item => {
+            if (!brandGroups[item.brand]) {
+                brandGroups[item.brand] = [];
+            }
+            brandGroups[item.brand].push(item);
+        });
+
         let currentIndex = 0;
-        Object.keys(brandData).forEach((brand, brandIndex) => {
-            const weeks = Object.keys(brandData[brand]);
-            
-            weeks.forEach(week => {
-                labels.push(`${brand} - ${week}`);
-                goodData.push(brandData[brand][week].Good);
-                niData.push(brandData[brand][week].NI);
-                poorData.push(brandData[brand][week].Poor);
+        Object.keys(brandGroups).forEach((brand, brandIndex) => {
+            brandGroups[brand].forEach(item => {
+                labels.push(`${item.brand} - ${item.TimeFrame}`);
+                goodData.push(item.good);
+                niData.push(item.ni);
+                poorData.push(item.poor);
                 currentIndex++;
             });
             
             // Add separator after each brand (except the last one)
-            if (brandIndex < Object.keys(brandData).length - 1) {
+            if (brandIndex < Object.keys(brandGroups).length - 1) {
                 separatorIndices.push(currentIndex - 0.5);
             }
         });
