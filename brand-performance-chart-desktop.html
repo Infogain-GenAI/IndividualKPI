@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Performance Across Months : Desktop</title>
+    <title>Brand Performance Across Months : Mobile</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -36,19 +36,57 @@
         .chart-section {
             padding: 20px;
         }
+        .controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filter-container label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .filter-container select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+        .filter-container select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
         .chart-container {
             position: relative;
             width: 100%;
             height: 2700px; /* Increased height for better vertical spacing */
+            z-index: 1;
+        }
+        .chart-container canvas {
+            position: relative;
+            z-index: 2;
+        }
+        /* Ensure tooltips are visible above all content */
+        .chartjs-tooltip {
+            z-index: 9999 !important;
         }
         .legend {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 6px;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .legend-item {
             display: flex;
@@ -64,28 +102,95 @@
         .good { background-color: #27ae60; }
         .ni { background-color: #f39c12; }
         .poor { background-color: #e74c3c; }
+        
+        .legend-separator {
+            color: #999;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        
+        .legend-icon {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .legend-icon.diamond {
+            width: 12px;
+            height: 12px;
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+        
+        .legend-icon.diamond.black {
+            background-color: #000000;
+        }
+        
+        .legend-icon.diamond.purple {
+            background-color: #9b59b6;
+        }
+        
+        .legend-icon.circle {
+            border-radius: 50%;
+        }
+        
+        .legend-icon.circle.green {
+            background-color: #27ae60;
+        }
+        
+        .legend-icon.circle.red {
+            background-color: #e74c3c;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Brand Performance Across Months : Desktop</h1>
+            <h1>📊 Brand Performance Across Months : Mobile</h1>
             <p>Horizontal Stacked Bar Chart with Brand Separators</p>
         </div>
         
         <div class="chart-section">
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color good"></div>
-                    <span>Good Performance</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color ni"></div>
-                    <span>Needs Improvement</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color poor"></div>
-                    <span>Poor Performance</span>
+            <div class="controls">
+                <div class="filter-container">
+                    <label for="brandFilter">Filter Brands:</label>
+                    <select id="brandFilter" onchange="updateChartFilter()">
+                        <option value="all">All Brands</option>
+                        <option value="attention">Need Attention Brands</option>
+                    </select>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color good"></div>
+                            <span>Good</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color ni"></div>
+                            <span>Needs Improvement</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color poor"></div>
+                            <span>Poor</span>
+                        </div>
+                        <div class="legend-separator">|</div>
+                        <div class="legend-item">
+                            <div class="legend-icon diamond black"></div>
+                            <span>45% Target</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon diamond purple"></div>
+                            <span>90% Target</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon circle green"></div>
+                            <span>Good Quality (≤10% Poor)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon circle red"></div>
+                            <span>Poor Quality (>10% Poor)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -195,96 +300,149 @@
   {brand: 'LAP', month: 'Sept', good: 376, ni: 0, poor: 0}
 ];
 
-        // Create labels and data arrays grouped by brand with months
-        const labels = [];
-        const goodData = [];
-        const niData = [];
-        const poorData = [];
-        const separatorIndices = [];
-        const warningFlags = []; // Track which bars need warning icons
-
-        // Get unique brands and months
-        const uniqueBrands = [...new Set(brandData.map(item => item.brand))];
+        // Global variables for chart management
+        let chart;
         const uniqueMonths = [...new Set(brandData.map(item => item.month))];
         const lastMonth = uniqueMonths[uniqueMonths.length - 1]; // Get the last month dynamically
-        
-        let currentIndex = 0;
-        uniqueBrands.forEach((brand, brandIndex) => {
-            // Get all months for this brand
-            const brandMonths = brandData.filter(item => item.brand === brand);
+
+        // Function to identify brands that need attention
+        function getBrandsNeedingAttention() {
+            const uniqueBrands = [...new Set(brandData.map(item => item.brand))];
+            const attentionBrands = [];
             
-            brandMonths.forEach((item, monthIndex) => {
-                // Show brand name and month for all entries
-                labels.push(`${item.brand} - ${item.month}`);
+            uniqueBrands.forEach(brand => {
+                const brandMonths = brandData.filter(item => item.brand === brand);
+                const lastMonthData = brandMonths.find(item => item.month === lastMonth);
+                const prevMonthData = brandMonths[brandMonths.length - 2]; // Second to last month
                 
-                goodData.push(item.good);
-                niData.push(item.ni);
-                poorData.push(item.poor);
-                
-                // Check if Poor or NI increased compared to previous month
-                // Only show warning flag on the last month if there's an increase
-                let needsWarning = false;
-                if (item.month === lastMonth && monthIndex > 0) {
-                    const prevMonth = brandMonths[monthIndex - 1];
-                    if (item.poor > prevMonth.poor || item.ni > prevMonth.ni) {
-                        needsWarning = true;
+                if (lastMonthData && prevMonthData) {
+                    if (lastMonthData.poor > prevMonthData.poor || lastMonthData.ni > prevMonthData.ni) {
+                        attentionBrands.push(brand);
                     }
                 }
-                warningFlags.push(needsWarning);
-                
-                currentIndex++;
             });
             
-            // Add spacing and separator after each brand (except the last one)
-            if (brandIndex < uniqueBrands.length - 1) {
-                // Add empty spacing entries for visual separation
-                labels.push(''); // Empty label for spacing
-                goodData.push(0);
-                niData.push(0);
-                poorData.push(0);
-                warningFlags.push(false); // No warning for spacing entries
-                currentIndex++;
-                
-                // Add separator line
-                separatorIndices.push(currentIndex - 0.5);
-                
-                // Add another empty spacing entry
-                labels.push(''); // Empty label for spacing
-                goodData.push(0);
-                niData.push(0);
-                poorData.push(0);
-                warningFlags.push(false); // No warning for spacing entries
-                currentIndex++;
-            }
-        });
+            return attentionBrands;
+        }
 
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        
-        const chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Good',
-                        data: goodData,
-                        backgroundColor: '#27ae60',
-                        borderWidth: 0
-                    },
-                    {
-                        label: 'NI',
-                        data: niData,
-                        backgroundColor: '#f39c12',
-                        borderWidth: 0
-                    },
-                    {
-                        label: 'Poor',
-                        data: poorData,
-                        backgroundColor: '#e74c3c',
-                        borderWidth: 0
+        // Function to create chart data based on filter
+        function createChartData(filterType = 'all') {
+            const labels = [];
+            const goodData = [];
+            const niData = [];
+            const poorData = [];
+            const separatorIndices = [];
+            const warningFlags = []; // Track which bars need warning icons
+
+            // Get unique brands and filter if needed
+            let uniqueBrands = [...new Set(brandData.map(item => item.brand))];
+            
+            if (filterType === 'attention') {
+                const attentionBrands = getBrandsNeedingAttention();
+                uniqueBrands = uniqueBrands.filter(brand => attentionBrands.includes(brand));
+            }
+            
+            let currentIndex = 0;
+            uniqueBrands.forEach((brand, brandIndex) => {
+                // Get all months for this brand
+                const brandMonths = brandData.filter(item => item.brand === brand);
+                
+                brandMonths.forEach((item, monthIndex) => {
+                    // Show brand name and month for all entries
+                    labels.push(`${item.brand} - ${item.month}`);
+                    
+                    goodData.push(item.good);
+                    niData.push(item.ni);
+                    poorData.push(item.poor);
+                    
+                    // Check if Poor or NI increased compared to previous month
+                    // Only show warning flag on the last month if there's an increase
+                    let needsWarning = false;
+                    if (item.month === lastMonth && monthIndex > 0) {
+                        const prevMonth = brandMonths[monthIndex - 1];
+                        if (item.poor > prevMonth.poor || item.ni > prevMonth.ni) {
+                            needsWarning = true;
+                        }
                     }
-                ]
-            },
+                    warningFlags.push(needsWarning);
+                    
+                    currentIndex++;
+                });
+                
+                // Add spacing and separator after each brand (except the last one)
+                if (brandIndex < uniqueBrands.length - 1) {
+                    // Add empty spacing entries for visual separation
+                    labels.push(''); // Empty label for spacing
+                    goodData.push(0);
+                    niData.push(0);
+                    poorData.push(0);
+                    warningFlags.push(false); // No warning for spacing entries
+                    currentIndex++;
+                    
+                    // Add separator line
+                    separatorIndices.push(currentIndex - 0.5);
+                    
+                    // Add another empty spacing entry
+                    labels.push(''); // Empty label for spacing
+                    goodData.push(0);
+                    niData.push(0);
+                    poorData.push(0);
+                    warningFlags.push(false); // No warning for spacing entries
+                    currentIndex++;
+                }
+            });
+            
+            return {
+                labels,
+                goodData,
+                niData,
+                poorData,
+                separatorIndices,
+                warningFlags
+            };
+        }
+
+        // Function to create/update the chart
+        function createChart(chartData) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            // Adjust chart container height based on number of data points
+            const chartContainer = document.querySelector('.chart-container');
+            const dataPointsCount = chartData.labels.filter(label => label !== '').length;
+            const minHeight = 800;
+            const heightPerDataPoint = 35;
+            const calculatedHeight = Math.max(minHeight, dataPointsCount * heightPerDataPoint + 200);
+            chartContainer.style.height = calculatedHeight + 'px';
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: 'Good',
+                            data: chartData.goodData,
+                            backgroundColor: '#27ae60',
+                            borderWidth: 0
+                        },
+                        {
+                            label: 'NI',
+                            data: chartData.niData,
+                            backgroundColor: '#f39c12',
+                            borderWidth: 0
+                        },
+                        {
+                            label: 'Poor',
+                            data: chartData.poorData,
+                            backgroundColor: '#e74c3c',
+                            borderWidth: 0
+                        }
+                    ]
+                },
             options: {
                 indexAxis: 'y', // This makes it horizontal
                 responsive: true,
@@ -297,7 +455,7 @@
                         enabled: true,
                         mode: 'nearest',
                         intersect: true,
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -305,6 +463,7 @@
                         cornerRadius: 6,
                         padding: 10,
                         displayColors: true,
+                        z: 9999, // Higher z-index for better visibility
                         filter: function(tooltipItem) {
                             // Don't show tooltip for empty spacing entries
                             return tooltipItem.label !== '' && tooltipItem.raw > 0;
@@ -322,31 +481,31 @@
                                 
                                 let label = '';
                                 if (context.dataset.label === 'Good') {
-                                    label = 'Good Performance';
+                                    label = 'Good';
                                 } else if (context.dataset.label === 'NI') {
                                     label = 'Needs Improvement';
                                 } else {
-                                    label = 'Poor Performance';
+                                    label = 'Poor';
                                 }
                                 return `${label}: ${value.toLocaleString()}`;
                             },
                             footer: function(tooltipItems) {
                                 if (tooltipItems && tooltipItems.length > 0) {
                                     const dataIndex = tooltipItems[0].dataIndex;
-                                    let total = 0;
-                                    tooltipItems.forEach(function(tooltipItem) {
-                                        if (tooltipItem.raw > 0) {
-                                            total += tooltipItem.raw;
-                                        }
-                                    });
+                                    
+                                    // Calculate total URLs as sum of good, ni, and poor
+                                    const good = chartData.goodData[dataIndex] || 0;
+                                    const ni = chartData.niData[dataIndex] || 0;
+                                    const poor = chartData.poorData[dataIndex] || 0;
+                                    const totalUrls = good + ni + poor;
                                     
                                     let footerText = '';
-                                    if (total > 0) {
-                                        footerText = `Total Pages: ${total.toLocaleString()}`;
+                                    if (totalUrls > 0) {
+                                        footerText = `Total URLs: ${totalUrls.toLocaleString()}`;
                                     }
                                     
                                     // Add warning message if this bar has a warning flag
-                                    if (warningFlags[dataIndex]) {
+                                    if (chartData.warningFlags[dataIndex]) {
                                         footerText += footerText ? '\n⚠️ Attention: Poor/NI increased from previous month' : 
                                                      '⚠️ Attention: Poor/NI increased from previous month';
                                     }
@@ -393,6 +552,13 @@
                         }
                     }
                 },
+                elements: {
+                    bar: {
+                        maxBarThickness: 25, // Limit maximum bar thickness
+                        categoryPercentage: 0.8, // Control space between categories
+                        barPercentage: 0.9 // Control bar width within category
+                    }
+                },
                 interaction: {
                     mode: 'nearest',
                     intersect: true
@@ -414,7 +580,7 @@
                     const xAxis = chart.scales.x;
                     
                     // Draw separator lines between brands
-                    separatorIndices.forEach(index => {
+                    chartData.separatorIndices.forEach(index => {
                         const y = yAxis.getPixelForValue(index);
                         
                         ctx.save();
@@ -429,17 +595,21 @@
                     });
                     
                     // Draw warning icons for bars that need attention
+                    const warningPositions = {}; // Track warning icon positions
                     chart.data.labels.forEach((label, index) => {
-                        if (warningFlags[index] && label !== '') {
+                        if (chartData.warningFlags[index] && label !== '') {
                             // Calculate the end position of the stacked bar
-                            const good = goodData[index] || 0;
-                            const ni = niData[index] || 0;
-                            const poor = poorData[index] || 0;
+                            const good = chartData.goodData[index] || 0;
+                            const ni = chartData.niData[index] || 0;
+                            const poor = chartData.poorData[index] || 0;
                             const total = good + ni + poor;
                             
                             if (total > 0) {
                                 const x = xAxis.getPixelForValue(total) + 10; // Position after the bar
                                 const y = yAxis.getPixelForValue(index);
+                                
+                                // Store warning position for later reference
+                                warningPositions[index] = x + 20; // Warning icon width + some spacing
                                 
                                 ctx.save();
                                 ctx.font = '16px Arial';
@@ -454,8 +624,87 @@
                             }
                         }
                     });
+                    
+                    // Draw diamond and circle icons for last month of each brand
+                    chart.data.labels.forEach((label, index) => {
+                        if (label !== '' && label.includes(lastMonth)) {
+                            const good = chartData.goodData[index] || 0;
+                            const ni = chartData.niData[index] || 0;
+                            const poor = chartData.poorData[index] || 0;
+                            const total = good + ni + poor;
+                            
+                            if (total > 0) {
+                                const y = yAxis.getPixelForValue(index);
+                                const barHeight = yAxis.getPixelForValue(index - 0.4) - yAxis.getPixelForValue(index + 0.4);
+                                const iconY = y + (barHeight / 2) + 15; // Position below the bar
+                                
+                                // Calculate diamond positions at 45% and 90% of total
+                                const diamond1X = xAxis.getPixelForValue(total * 0.45);
+                                const diamond2X = xAxis.getPixelForValue(total * 0.90);
+                                
+                                ctx.save();
+                                
+                                // Draw diamonds
+                                const drawDiamond = (x, y, size = 6) => {
+                                    ctx.beginPath();
+                                    ctx.moveTo(x, y - size); // top
+                                    ctx.lineTo(x + size, y); // right
+                                    ctx.lineTo(x, y + size); // bottom
+                                    ctx.lineTo(x - size, y); // left
+                                    ctx.closePath();
+                                };
+                                
+                                // First diamond at 45%
+                                ctx.fillStyle = '#000000'; // Black diamond for better visibility
+                                drawDiamond(diamond1X, iconY);
+                                ctx.fill();
+                                
+                                // Second diamond at 90%
+                                ctx.fillStyle = '#9b59b6';
+                                drawDiamond(diamond2X, iconY);
+                                ctx.fill();
+                                
+                                // Draw circle based on poor performance percentage
+                                const poorPercentage = (poor / total) * 100;
+                                const barEndX = xAxis.getPixelForValue(total);
+                                
+                                // Check if there's a warning icon for this row and adjust position
+                                let circleX = barEndX + 10; // Default: 10px after the bar end
+                                if (warningPositions[index]) {
+                                    circleX = warningPositions[index] + 10; // 10px after warning icon
+                                }
+                                const circleRadius = 5;
+                                
+                                ctx.beginPath();
+                                ctx.arc(circleX, iconY, circleRadius, 0, 2 * Math.PI);
+                                
+                                if (poorPercentage > 10) {
+                                    ctx.fillStyle = '#e74c3c'; // Red circle for >10% poor
+                                } else {
+                                    ctx.fillStyle = '#27ae60'; // Green circle for <=10% poor
+                                }
+                                ctx.fill();
+                                
+                                ctx.restore();
+                            }
+                        }
+                    });
                 }
             }]
+            });
+        }
+
+        // Function to update chart based on filter selection
+        function updateChartFilter() {
+            const filterValue = document.getElementById('brandFilter').value;
+            const chartData = createChartData(filterValue);
+            createChart(chartData);
+        }
+
+        // Initialize the chart with all brands
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialData = createChartData('all');
+            createChart(initialData);
         });
     </script>
 </body>
